@@ -1,24 +1,32 @@
-# ===== Makefile at microservice-playground/ =====
+# make builds all services
+# make clean cleans
+# make run SERVICE=identity-service runs one service
+# ===== Makefile =====
 
-# Variables
-SERVICE_NAME := identity-service
-DOCKER_IMAGE := $(SERVICE_NAME):latest
-SERVICE_DIR := $(SERVICE_NAME)
+# List all services
+SERVICES := identity-service scheduling-service
 
-# Default target
+# Default target: build all services
 all: build
 
-# Build the Docker image
+# Build all services
 build:
-	docker build -t $(DOCKER_IMAGE) $(SERVICE_DIR)
+	@for svc in $(SERVICES); do \
+		echo "Building $$svc..."; \
+		docker build -t $$svc:latest $$svc; \
+	done
 
-# Run the Docker image locally
-run: build
-	docker run --rm -p 8080:8080 -p 9090:9090 $(DOCKER_IMAGE)
+# Run a single service (default: identity-service)
+SERVICE ?= identity-service
+run: 
+	docker run --rm -p 8080:8080 -p 9090:9090 $(SERVICE):latest
 
-# Clean images
+# Clean all images
 clean:
-	docker rmi -f $(DOCKER_IMAGE)
+	@for svc in $(SERVICES); do \
+		echo "Removing $$svc image..."; \
+		docker rmi -f $$svc:latest; \
+	done
 
 .PHONY: all build run clean
 
