@@ -4,7 +4,7 @@
 # ===== Makefile =====
 
 # List all services
-SERVICES := identity-service scheduling-service
+SERVICES := identity-service scheduling-service invoice-service
 
 # Default target: build all services
 all: build
