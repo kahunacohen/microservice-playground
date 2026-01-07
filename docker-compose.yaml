@@ -1,0 +1,39 @@
+services:
+  identity-service:
+    build:
+      context: ./identity-service
+    container_name: identity-service
+    ports:
+      - "8081:8080"   # host:container (change if your service uses 8080 internally)
+      - "9091:9090"   # e.g., grpc
+    environment:
+      - SERVICE_NAME=identity-service
+
+  scheduling-service:
+    build:
+      context: ./scheduling-service
+    container_name: scheduling-service
+    ports:
+      - "8082:8080"
+      - "9092:9090"
+    environment:
+      - SERVICE_NAME=scheduling-service
+      # If this service calls identity-service, it should use the *service name*:
+      # - IDENTITY_GRPC_ADDR=identity-service:9090
+    depends_on:
+      - identity-service
+
+  invoice-service:
+    build:
+      context: ./invoice-service
+    container_name: invoice-service
+    ports:
+      - "8083:8080"
+      - "9093:9090"
+    environment:
+      - SERVICE_NAME=invoice-service
+      # - SCHEDULING_GRPC_ADDR=scheduling-service:9090
+      # - IDENTITY_GRPC_ADDR=identity-service:9090
+    depends_on:
+      - identity-service
+      - scheduling-service
