@@ -2,38 +2,49 @@ services:
   identity-service:
     build:
       context: ./identity-service
-    container_name: identity-service
+    working_dir: /app
+    volumes:
+      - ./identity-service:/app
+      - identity_gomod:/go/pkg/mod
+      - identity_gocache:/root/.cache/go-build
     ports:
-      - "8081:8080"   # host:container (change if your service uses 8080 internally)
-      - "9091:9090"   # e.g., grpc
-    environment:
-      - SERVICE_NAME=identity-service
+      - "8081:8080"
+      - "9091:9090"
 
   scheduling-service:
     build:
       context: ./scheduling-service
-    container_name: scheduling-service
+    working_dir: /app
+    volumes:
+      - ./scheduling-service:/app
+      - scheduling_gomod:/go/pkg/mod
+      - scheduling_gocache:/root/.cache/go-build
     ports:
       - "8082:8080"
       - "9092:9090"
-    environment:
-      - SERVICE_NAME=scheduling-service
-      # If this service calls identity-service, it should use the *service name*:
-      # - IDENTITY_GRPC_ADDR=identity-service:9090
     depends_on:
       - identity-service
 
   invoice-service:
     build:
       context: ./invoice-service
-    container_name: invoice-service
+    working_dir: /app
+    volumes:
+      - ./invoice-service:/app
+      - invoice_gomod:/go/pkg/mod
+      - invoice_gocache:/root/.cache/go-build
     ports:
       - "8083:8080"
       - "9093:9090"
-    environment:
-      - SERVICE_NAME=invoice-service
-      # - SCHEDULING_GRPC_ADDR=scheduling-service:9090
-      # - IDENTITY_GRPC_ADDR=identity-service:9090
     depends_on:
       - identity-service
       - scheduling-service
+
+volumes:
+  identity_gomod: {}
+  identity_gocache: {}
+  scheduling_gomod: {}
+  scheduling_gocache: {}
+  invoice_gomod: {}
+  invoice_gocache: {}
+

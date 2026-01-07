@@ -7,7 +7,7 @@ import (
 
 func main() {
 	for {
-		fmt.Println("serving identity-service...")
+		fmt.Println("serverrrrrrrr")
 		time.Sleep(1 * time.Second)
 	}
 }
