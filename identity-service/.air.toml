@@ -1,17 +1,12 @@
-# .air.toml
 root = "."
 tmp_dir = "tmp"
 
 [build]
-  cmd = "go build -o ./tmp/app ./cmd"
-  bin = "./tmp/app"
-  delay = 200
-  include_ext = ["go", "tpl", "tmpl", "html"]
-  exclude_dir = ["tmp", "vendor", ".git"]
-  stop_on_error = true
-  poll = true
-  poll_interval = 500
+cmd = "go build -o tmp/server ./cmd"
+bin = "tmp/server"
+include_ext = ["go"]
+exclude_dir = ["tmp", "vendor"]
 
-[log]
-  time = true
+[run]
+cmd = "./tmp/server"
 

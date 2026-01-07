@@ -1,0 +1,18 @@
+# Compiled binaries and output files
+# Use `go build -o bin/` to place all binaries in a single directory
+tmp
+bin/*
+# Individual binaries in the root directory (less common)
+*.exe
+*.test
+*.prof
+
+# Dependency directories
+# Vendor directory (if used, although 'go mod' is standard now)
+vendor/
+
+# IDE/editor-specific files and directories (optional, consider a global gitignore instead)
+# .idea/         # Example for IntelliJ/GoLand
+# .vscode/       # Example for VS Code
+# *.swp          # Example for Vim swap files
+
