@@ -33,6 +33,10 @@ func (s *identityServer) GetIdentity(
 	}, nil
 }
 
+func (s *identityServer) DeleteIdentity(ctx context.Context, id int) error {
+	return nil
+}
+
 func main() {
 	lis, err := net.Listen("tcp", ":9090") // internal container port
 	if err != nil {

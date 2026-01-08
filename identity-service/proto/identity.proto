@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package identity;
 option go_package = "github.com/kahunacohen/microservice-playground/identity-service/proto;proto";
+import "google/protobuf/empty.proto";
+
 
 
 // The identity message
@@ -22,8 +24,12 @@ message GetIdentityResponse {
   Identity identity = 1;
 }
 
+message DeleteIdentityRequest {
+  string id = 1;
+}
 // The service
 service IdentityService {
   rpc GetIdentity(GetIdentityRequest) returns (GetIdentityResponse);
+  rpc DeleteIdentity(DeleteIdentityRequest) returns (google.protobuf.Empty);
 }
 
