@@ -6,7 +6,7 @@ bin/*
 *.exe
 *.test
 *.prof
-*.gen
+**/gen/
 
 # Dependency directories
 # Vendor directory (if used, although 'go mod' is standard now)
