@@ -5,36 +5,38 @@ import (
 	"log"
 	"net"
 
-	pb "github.com/kahunacohen/microservice-playground/identity-service/proto"
+	identitypb "github.com/kahunacohen/microservice-playground/identity-service/proto/identity"
+
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 // Server struct
 type identityServer struct {
-	pb.UnimplementedIdentityServiceServer
+	identitypb.UnimplementedIdentityServiceServer
 }
 
 // Implement the RPC
 func (s *identityServer) GetIdentity(
 	ctx context.Context,
-	req *pb.GetIdentityRequest,
-) (*pb.GetIdentityResponse, error) {
+	req *identitypb.GetIdentityRequest,
+) (*identitypb.GetIdentityResponse, error) {
 
 	// Dummy data for now
-	identity := &pb.Identity{
+	identity := &identitypb.Identity{
 		Id:         req.Id,
 		Name:       "Alice Example",
 		Email:      "alice@example.com",
 		NationalId: "123456789",
 	}
 
-	return &pb.GetIdentityResponse{
+	return &identitypb.GetIdentityResponse{
 		Identity: identity,
 	}, nil
 }
 
-func (s *identityServer) DeleteIdentity(ctx context.Context, id int) error {
-	return nil
+func (s *identityServer) DeleteIdentity(ctx context.Context, req *identitypb.DeleteIdentityRequest) (*emptypb.Empty, error) {
+	return nil, nil
 }
 
 func main() {
@@ -44,7 +46,7 @@ func main() {
 	}
 
 	grpcServer := grpc.NewServer()
-	pb.RegisterIdentityServiceServer(grpcServer, &identityServer{})
+	identitypb.RegisterIdentityServiceServer(grpcServer, &identityServer{})
 
 	log.Println("gRPC server listening on :9090")
 	if err := grpcServer.Serve(lis); err != nil {

@@ -1,12 +1,11 @@
 syntax = "proto3";
 
 package identity;
-option go_package = "github.com/kahunacohen/microservice-playground/identity-service/proto;proto";
+option go_package = "api/identity;identitypb";
+
+
 import "google/protobuf/empty.proto";
 
-
-
-// The identity message
 message Identity {
   string id = 1;
   string name = 2;
@@ -14,12 +13,10 @@ message Identity {
   string national_id = 4;
 }
 
-// Request message
 message GetIdentityRequest {
   string id = 1;
 }
 
-// Response message
 message GetIdentityResponse {
   Identity identity = 1;
 }
@@ -27,7 +24,7 @@ message GetIdentityResponse {
 message DeleteIdentityRequest {
   string id = 1;
 }
-// The service
+
 service IdentityService {
   rpc GetIdentity(GetIdentityRequest) returns (GetIdentityResponse);
   rpc DeleteIdentity(DeleteIdentityRequest) returns (google.protobuf.Empty);

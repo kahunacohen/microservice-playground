@@ -1,36 +1,55 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+API_DIR="api"
+
+# Find all .proto files under api/
+PROTOS=$(find "$API_DIR" -name "*.proto")
+
+if [ -z "$PROTOS" ]; then
+  echo "No proto files found in $API_DIR"
+  exit 0
+fi
+
+echo "Found proto files:"
+echo "$PROTOS"
+echo
+
+# Iterate through each service directory
 for service in */; do
-  PROTO_DIR="${service}proto"
+  # Skip non-service directories
+  [[ "$service" == "api/" ]] && continue
+  [[ "$service" == "tmp/" ]] && continue
 
-  [ -d "$PROTO_DIR" ] || continue
+  SERVICE_PROTO_DIR="${service}proto"
 
-  # Find proto files
-  PROTOS=$(find "$PROTO_DIR" -name "*.proto")
-
-  # Skip if none found
-  [ -n "$PROTOS" ] || {
-    echo "No proto files in $PROTO_DIR, skipping"
+  # Only compile for services that have a proto/ directory
+  if [ ! -d "$SERVICE_PROTO_DIR" ]; then
+    echo "Skipping $service (no proto directory)"
     continue
-  }
+  fi
 
-  echo "Compiling protos for ${service}"
+  echo "Compiling protos for $service → $SERVICE_PROTO_DIR"
 
-  # Compile standard protobuf structs into the proto folder
+  # Compile protobuf messages
   protoc \
-    --proto_path="$PROTO_DIR" \
-    --go_out="$PROTO_DIR" \
+    --proto_path="$API_DIR" \
+    --go_out="$SERVICE_PROTO_DIR" \
     --go_opt=paths=source_relative \
     $PROTOS
 
-  # Compile gRPC server/client code into the proto folder
+  # Compile gRPC service stubs
   protoc \
-    --proto_path="$PROTO_DIR" \
-    --go-grpc_out="$PROTO_DIR" \
+    --proto_path="$API_DIR" \
+    --go-grpc_out="$SERVICE_PROTO_DIR" \
     --go-grpc_opt=paths=source_relative \
     $PROTOS
-  echo "running go mod tidy"
-  go mod tidy -C $service
+
+  echo "Running go mod tidy for $service"
+  go mod tidy -C "$service"
+
+  echo
 done
+
+echo "Done."
 
