@@ -3,9 +3,8 @@ syntax = "proto3";
 package identity;
 option go_package = "github.com/kahunacohen/proto-gen/identity;identitypb";
 
-
-
 import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
 
 message Identity {
   string id = 1;
@@ -26,8 +25,24 @@ message DeleteIdentityRequest {
   string id = 1;
 }
 
+message GetPatientRequest {
+  string id = 1;
+}
+
+message GetPatientResponse {
+  Identity identity = 1;
+}
+
 service IdentityService {
   rpc GetIdentity(GetIdentityRequest) returns (GetIdentityResponse);
-  rpc DeleteIdentity(DeleteIdentityRequest) returns (google.protobuf.Empty);
+
+  rpc DeleteIdentity(DeleteIdentityRequest)
+      returns (google.protobuf.Empty);
+
+  rpc GetPatient(GetPatientRequest) returns (GetPatientResponse) {
+    option (google.api.http) = {
+      get: "/v1/patients/{id}"
+    };
+  }
 }
 

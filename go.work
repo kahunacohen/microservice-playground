@@ -5,4 +5,5 @@ use (
 	./invoice-service
 	./proto-gen
 	./scheduling-service
+  ./gateway-service
 )

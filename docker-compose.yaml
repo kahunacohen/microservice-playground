@@ -36,6 +36,15 @@ services:
     depends_on:
       - identity-service
       - scheduling-service
+  gateway-service:
+    build: 
+      context: ./gateway-service
+    ports: 
+      - "8080:8080"
+    depends_on: 
+      - identity-service
+      - scheduling-service
+      - invoice-service
 
 volumes:
   identity_gomod: {}
