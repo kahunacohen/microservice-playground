@@ -6,7 +6,6 @@ bin/*
 *.exe
 *.test
 *.prof
-**/gen/
 **/*.pb.go
 
 # Dependency directories

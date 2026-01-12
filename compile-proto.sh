@@ -2,6 +2,10 @@
 set -euo pipefail
 
 API_DIR="api"
+OUT_DIR="proto-gen"
+
+# Create output directory if missing
+mkdir -p "$OUT_DIR"
 
 # Find all .proto files under api/
 PROTOS=$(find "$API_DIR" -name "*.proto")
@@ -15,41 +19,22 @@ echo "Found proto files:"
 echo "$PROTOS"
 echo
 
-# Iterate through each service directory
-for service in */; do
-  # Skip non-service directories
-  [[ "$service" == "api/" ]] && continue
-  [[ "$service" == "tmp/" ]] && continue
+echo "Generating protobuf code into $OUT_DIR"
 
-  SERVICE_PROTO_DIR="${service}proto"
+# Compile protobuf messages
+protoc \
+  --proto_path="$API_DIR" \
+  --go_out="$OUT_DIR" \
+  --go_opt=paths=source_relative \
+  $PROTOS
 
-  # Only compile for services that have a proto/ directory
-  if [ ! -d "$SERVICE_PROTO_DIR" ]; then
-    echo "Skipping $service (no proto directory)"
-    continue
-  fi
+# Compile gRPC service stubs
+protoc \
+  --proto_path="$API_DIR" \
+  --go-grpc_out="$OUT_DIR" \
+  --go-grpc_opt=paths=source_relative \
+  $PROTOS
 
-  echo "Compiling protos for $service → $SERVICE_PROTO_DIR"
-
-  # Compile protobuf messages
-  protoc \
-    --proto_path="$API_DIR" \
-    --go_out="$SERVICE_PROTO_DIR" \
-    --go_opt=paths=source_relative \
-    $PROTOS
-
-  # Compile gRPC service stubs
-  protoc \
-    --proto_path="$API_DIR" \
-    --go-grpc_out="$SERVICE_PROTO_DIR" \
-    --go-grpc_opt=paths=source_relative \
-    $PROTOS
-
-  echo "Running go mod tidy for $service"
-  go mod tidy -C "$service"
-
-  echo
-done
-
+go mod tidy -C $OUT_DIR
 echo "Done."
 

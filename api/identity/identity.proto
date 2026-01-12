@@ -1,7 +1,8 @@
 syntax = "proto3";
 
 package identity;
-option go_package = "api/identity;identitypb";
+option go_package = "github.com/kahunacohen/proto-gen/identity;identitypb";
+
 
 
 import "google/protobuf/empty.proto";

@@ -5,7 +5,7 @@ import (
 	"log"
 	"net"
 
-	identitypb "github.com/kahunacohen/microservice-playground/identity-service/proto/identity"
+	identitypb "github.com/kahunacohen/proto-gen/identity"
 
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"
