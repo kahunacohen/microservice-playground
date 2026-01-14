@@ -37,15 +37,19 @@ services:
       - identity-service
       - scheduling-service
   gateway-service:
-    build: 
+    build:
       context: ./gateway-service
-    ports: 
+    working_dir: /app
+    volumes:
+      - ./gateway-service:/app
+      - gateway_gomod:/go/pkg/mod
+      - gateway_gocache:/root/.cache/go-build
+    ports:
       - "8080:8080"
-    depends_on: 
-      - identity-service
-      - scheduling-service
-      - invoice-service
-
+    depends_on:
+        - identity-service
+        - scheduling-service
+        - invoice-service
 volumes:
   identity_gomod: {}
   identity_gocache: {}
@@ -53,4 +57,7 @@ volumes:
   scheduling_gocache: {}
   invoice_gomod: {}
   invoice_gocache: {}
+  gateway_gomod: {}
+  gateway_gocache: {}
+
 
