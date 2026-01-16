@@ -11,6 +11,7 @@ bin/*
 # Dependency directories
 # Vendor directory (if used, although 'go mod' is standard now)
 vendor/
+third_party/googleapis/
 
 # IDE/editor-specific files and directories (optional, consider a global gitignore instead)
 # .idea/         # Example for IntelliJ/GoLand
