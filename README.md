@@ -90,7 +90,9 @@ This will:
 
 ## Code Generation
 
-Protobuf code generation is handled via scripts in the `scripts/` directory.
+Protobuf code generation is handled via a script (`compile-proto.sh`), but the
+playground can be run without running this script. This script is meant for the
+repo maintainers.
 
 Typical responsibilities include:
 - Fetching third-party proto dependencies
@@ -99,8 +101,6 @@ Typical responsibilities include:
 
 The generated output is written to:
 - `proto-gen/` (committed)
-- `third_party/` (ignored)
-
 ---
 
 ## Design Goals & Non-Goals
