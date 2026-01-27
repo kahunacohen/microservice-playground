@@ -1,9 +1,9 @@
 go 1.25.0
 
 use (
+	./gateway-service
 	./identity-service
 	./invoice-service
 	./proto-gen
 	./scheduling-service
-  ./gateway-service
 )

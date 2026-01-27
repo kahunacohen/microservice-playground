@@ -5,6 +5,8 @@
 # this repo.
 echo "file structure"
 tree -L 3.
+echo "go.work"
+cat go.work
 echo "docker-compose.yaml"
 cat docker-compose.yaml
 echo "compile-proto.sh:"

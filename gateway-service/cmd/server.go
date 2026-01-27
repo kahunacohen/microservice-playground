@@ -70,4 +70,3 @@ func main() {
 	defer shutdownCancel()
 	server.Shutdown(shutdownCtx)
 }
-

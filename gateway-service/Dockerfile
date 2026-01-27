@@ -6,11 +6,8 @@ RUN apk add --no-cache git
 # Install air
 RUN go install github.com/air-verse/air@latest
 
-# Cache deps first
-COPY go.mod go.sum ./
-RUN go mod download
-
 EXPOSE 8080
+#CMD ["air"]
+CMD ["air", "-c", "gateway-service/.air.toml"]
 
-CMD ["air"]
 

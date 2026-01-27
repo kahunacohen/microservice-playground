@@ -1,12 +1,16 @@
+# We start Air at repo root
 root = "."
-tmp_dir = "tmp"
+
+# Keep temp files inside the service
+tmp_dir = "gateway-service/tmp"
 
 [build]
-cmd = "go build -o tmp/server ./cmd"
-bin = "tmp/server"
+cmd = "cd gateway-service && go build -o tmp/server ./cmd"
+entrypoint = "gateway-service/tmp/server"
+
 include_ext = ["go"]
-exclude_dir = ["tmp", "vendor"]
+exclude_dir = ["gateway-service/tmp", "vendor"]
 
 [run]
-cmd = "./tmp/server"
+cmd = "gateway-service/tmp/server"
 
